@@ -1,6 +1,6 @@
 # Mapping Submerged Paleoshorelines using R
 
-This is the r code to create paleoshoreline reconstructions. Full details are available: https://padmorrison.com/post/submerged-landscapes-maps-in-r/
+This is the r code to create paleoshoreline reconstructions. Full details are available: https://padmorrison.com/posts/2020-09-15-submerged-landscapes-maps-in-r/
 
 The Rottnest Shelf DEM is provided for convenience, and has been extracted from: 
 
