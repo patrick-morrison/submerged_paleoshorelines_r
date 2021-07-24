@@ -1,8 +1,14 @@
 library(readxl)
 library(ggpubr)
 library(raster)
+library(rgdal)
 library(marmap)
 library(tidyverse)
+
+library(foreach)
+library(doParallel)
+cl <- makeCluster(detectCores()-1)
+registerDoParallel(cl)
 
 land <- raster("rottnest_shelf.tif")
 dims <- as.integer(min(dim(land)[1:2] / c(2000, 3000)))
@@ -36,8 +42,9 @@ simulate <- function (row, z) {
   z-predictions$smooth[row]
 }
 
-for (time in 1:nrow(predictions)) {
-  
+
+foreach (time=1:nrow(predictions), .packages=c("dplyr", "ggplot2", "marmap", 'ggpubr')) %dopar% {
+    
   map <- ggplot(land, aes(x,y, fill=simulate(time, z))) +
     geom_raster() + scale_fill_etopo(guide = FALSE) +
     coord_equal() +
@@ -67,5 +74,7 @@ for (time in 1:nrow(predictions)) {
   
   ggsave(paste0(nrow(predictions)-time+1, "_rottnest_shelf.png"),
          height=9,
-         width=9)
+         width=9,
+         bg='white')
 }
+stopCluster(cl)
